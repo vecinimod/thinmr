@@ -5,6 +5,7 @@
     <title>Primus Rooms Test</title>
     <script src="/primus/primus.js"></script>
     <script src="/cluster.js"></script>
+    <script src="/lodash.min.js"></script>
     <script src="/PapaParse/papaparse.js"></script>
   </head>
   <body>
@@ -160,9 +161,7 @@ function cstepFn(resultz, parser)
 		}
 		if (resultz.constructor.name === 'String'){
 		  crescsv.push(resultz);
-		//TODO: for each chunk, create, run function that sends out chunk to
-		//each worker
-     		 // primus.write({ room: 'dt', who:'*', msg: {fnc:'recadd',args:n} })
+
 		}
 	}
 }

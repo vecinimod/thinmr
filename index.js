@@ -10,9 +10,12 @@ var server = http.createServer(function server(req, res) {
     } else if(req.url==='/cluster.js'){
 	res.setHeader('Content-Type', 'text/javascript');
 	fs.createReadStream(__dirname + req.url).pipe(res);
-    } else if(req.url==='/tmp.csv'){
+    } else if(req.url==='/lodash.min.js'){
+	res.setHeader('Content-Type', 'text/javascript');
+	fs.createReadStream(__dirname + req.url).pipe(res);
+    } else if(req.url==='/tmp.csv'||req.url==='/training.csv'){
 	console.log('req.headers.range', req.headers.range);
-	var sz = fs.stat(__dirname+'/tmp.csv', 
+	var sz = fs.stat(__dirname+req.url, 
 			 function(e,s){
 			     console.log('file size',s.size);
 			     res.setHeader('Content-Range', '*/'+s.size);
@@ -56,7 +59,7 @@ primus.on('connection', function(spark){
 	    return;
 	}
 	var who = data.who;
-	console.log('room',room,'msg', message, 'who',who,'rooms', spark.rooms());
+	//console.log('room',room,'msg', message, 'who',who,'rooms', spark.rooms());
 	// check if spark is already in this room
 	if ((spark.rooms().indexOf(room)!==undefined)&&(spark.rooms().indexOf(room)>0)) {
 	    send();
@@ -95,10 +98,10 @@ primus.on('connection', function(spark){
 		}
 		console.log('notin',notin);
 		if(notin.length >0){
-		    console.log('room',room,'clients',spark.room(room).clients(),'notin',notin, 'who',who, 'msg',message)
+		    //console.log('room',room,'clients',spark.room(room).clients(),'notin',notin, 'who',who, 'msg',message)
 		    spark.room(room).except(notin).write(message);
 		} else {
-		    console.log('notin zero posting to all', message)
+		    //console.log('notin zero posting to all', message)
 		    spark.room(room).write(message);
 		}
 	    }
